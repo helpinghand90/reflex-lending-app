@@ -2,7 +2,7 @@
 
 import reflex as rx
 
-from reflex_gpt import ui
+from lending_app import ui
 
 def about_us_page() -> rx.Component:
     # About us Page

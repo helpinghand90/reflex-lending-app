@@ -4,7 +4,7 @@ import reflex as rx
 
 from rxconfig import config
 
-from reflex_gpt import ui
+from lending_app import ui
 
 def home_page() -> rx.Component:
     # Welcome Page (Index)

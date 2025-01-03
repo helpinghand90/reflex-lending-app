@@ -3,7 +3,7 @@ import reflex as rx
 import sqlmodel
 
 from typing import List, Optional
-from reflex_gpt.models import ChatSession, ChatSessionMessageModel
+from lending_app.models import ChatSession, ChatSessionMessageModel
 
 from . import ai
 

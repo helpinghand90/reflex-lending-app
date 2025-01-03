@@ -1,6 +1,6 @@
 import reflex as rx
 
-from reflex_gpt import ui
+from lending_app import ui
 
 from .state import ChatMessage, ChatState
 from .form import chat_form

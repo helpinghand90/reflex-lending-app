@@ -5,10 +5,7 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-
-DATABASE_URL = config("DATABASE_URL")
-
 config = rx.Config(
-    app_name="reflex_gpt",
-    db_url=os.getenv("DATABASE_URL"),
+    app_name="lending_app",
+    db_url=os.getenv("DATABASE_URL"),  # Use os.getenv to get the value
 )

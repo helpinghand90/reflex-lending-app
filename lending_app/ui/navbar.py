@@ -1,6 +1,6 @@
 import reflex as rx
 
-from reflex_gpt import navigation
+from lending_app import navigation
 
 def navbar_link(text: str, url: str) -> rx.Component:
     return rx.link(
