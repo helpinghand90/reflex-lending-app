@@ -14,6 +14,7 @@ def base_layout(*args, **kwargs) -> rx.Component:
             width='100%',
             max_width='100%',
             padding='0',
+            min_height='600px',
         ),
         base_footer(),
         id='my-base-container',

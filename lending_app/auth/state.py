@@ -43,6 +43,7 @@ class AuthState(rx.State):
     """The app state."""
 
     is_authenticated: bool = False
+    user_id: str = None
     user_details: dict = {}
 
     def initiate_login(self):
@@ -97,6 +98,7 @@ class AuthState(rx.State):
             self.user_details = kinde_client.get_user_details()
             logging.info(f"User details fetched: {self.user_details}")
             self.save_user_to_database(self.user_details)
+            self.user_id = self.user_details["id"]
         else:
             logging.info("User is not authenticated")
 
