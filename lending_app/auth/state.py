@@ -12,6 +12,7 @@ logging.basicConfig(
 
 
 # TODO: Remove Kinde credentials from the file here
+# TODO: only log user details to the database when they first sign up
 
 # KINDE_HOST = os.environ.get("KINDE_HOST")
 # KINDE_CLIENT_ID = os.environ.get("KINDE_CLIENT_ID")
