@@ -45,3 +45,30 @@ class ChatSessionMessageModel(rx.Model, table=True):
         },
         nullable=False,
     )
+
+
+class UserDetailsModel(rx.Model, table=True):
+    # id
+    user_id: str
+    given_name: str
+    family_name: str
+    email: str
+    picture: str
+    created_at: datetime = Field(
+        default_factory=get_utc_now,
+        sa_type=sqlalchemy.DateTime(timezone=True),
+        sa_column_kwargs={
+            'server_default': sqlalchemy.func.now()
+        },
+        nullable=False,
+    )
+    update_at: datetime = Field(
+        default_factory=get_utc_now,
+        sa_type=sqlalchemy.DateTime(timezone=True),
+        sa_column_kwargs={
+            'onupdate': sqlalchemy.func.now(),
+            'server_default': sqlalchemy.func.now()
+        },
+        nullable=False,
+    )
+
