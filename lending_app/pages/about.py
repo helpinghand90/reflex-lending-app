@@ -12,6 +12,7 @@ def about_us_page() -> rx.Component:
             spacing="5",
             justify="center",
             min_height="85vh",
+            width="100%",  # Ensure full width
+            id="about-us-vstack",
         ),
-        rx.logo(),
     )
