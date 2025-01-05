@@ -41,18 +41,28 @@ def chat_page():
     return ui.base_layout(
         rx.cond(
             AuthState.is_authenticated,
-            rx.vstack(
-                rx.hstack(
-                    rx.heading("Chat Here", size="5"),
-                    rx.cond(ChatState.not_found, "Not found", "Found"),
-                    rx.button("+ New Chat", on_click=ChatState.create_new_and_redirect),
+            rx.hstack(
+                rx.box(width="10%"),
+                rx.vstack(
+                    rx.hstack(
+                        rx.heading("Chat Here", size="5"),
+                        # rx.cond(ChatState.not_found, "Not found", "Found"),
+                        rx.button(
+                            "+ New Chat", on_click=ChatState.create_new_and_redirect
+                        ),
+                        id="chat-page-open-hstack",
+                    ),
+                    rx.box(rx.foreach(ChatState.messages, message_box), width="100%"),
+                    chat_form(),
+                    margin="3rem auto",
+                    spacing="5",
+                    justify="center",
+                    min_height="85vh",
+                    width="80%",
+                    id="chat-page-open-vstack",
                 ),
-                rx.box(rx.foreach(ChatState.messages, message_box), width="100%"),
-                chat_form(),
-                margin="3rem auto",
-                spacing="5",
-                justify="center",
-                min_height="85vh",
+                rx.box(width="10%"),
+                width="100%",
             ),
             rx.hstack(
                 rx.box(
@@ -61,7 +71,11 @@ def chat_page():
                         "Please log in to start a chat", size="9", text_align="center"
                     ),
                     rx.box(height="10vh"),
-                    rx.button("Login/Register", on_click=AuthState.initiate_login, style={"font-size": "1.5em", "padding": "1em 2em"}),
+                    rx.button(
+                        "Login/Register",
+                        on_click=AuthState.initiate_login,
+                        style={"font-size": "1.5em", "padding": "1em 2em"},
+                    ),
                     width="100%",
                     text_align="center",
                     minimum_height="85vh",
