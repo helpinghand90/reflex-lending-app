@@ -1,5 +1,5 @@
 # from . import state
-from .state import AuthState
+from .auth_state import AuthState
 
 
 __all__ = [

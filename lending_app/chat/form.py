@@ -1,6 +1,6 @@
 import reflex as rx
 
-from .state import ChatState
+from .chat_state import ChatState
 
 def chat_form() -> rx.Component:
     return rx.form(

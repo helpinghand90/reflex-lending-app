@@ -3,8 +3,8 @@ import reflex as rx
 from lending_app import ui
 
 
-from lending_app.auth.state import AuthState
-from .state import ChatMessage, ChatState
+from lending_app.auth.auth_state import AuthState
+from .chat_state import ChatMessage, ChatState
 from .form import chat_form
 
 

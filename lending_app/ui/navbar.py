@@ -1,7 +1,7 @@
 import reflex as rx
 
 from lending_app import navigation
-from lending_app.auth.state import AuthState
+from lending_app.auth.auth_state import AuthState
 
 
 def navbar_link(text: str, url: str) -> rx.Component:
@@ -55,13 +55,13 @@ def base_navbar() -> rx.Component:
                     rx.menu.trigger(rx.icon("menu", size=30)),
                     rx.menu.content(
                         rx.menu.item(
-                            "Home", on_click=navigation.state.NavState.to_home
+                            "Home", on_click=navigation.nav_state.NavState.to_home
                         ),
                         rx.menu.item(
-                            "About", on_click=navigation.state.NavState.to_about_us
+                            "About", on_click=navigation.nav_state.NavState.to_about_us
                         ),
                         rx.menu.item(
-                            "Chat", on_click=navigation.state.NavState.to_chat
+                            "Chat", on_click=navigation.nav_state.NavState.to_chat
                         ),
                     ),
                     justify="end",

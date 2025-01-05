@@ -1,8 +1,8 @@
-from . import state
-from .page import chat_page
+from . import chat_state
+from .chat_page import chat_page
 
 
 __all__ = [
     'chat_page',
-    'state'
+    'chat_state'
 ]

@@ -1,9 +1,10 @@
 import reflex as rx
 
 from . import routes
+from lending_app.auth.auth_state import AuthState
 
 
-class NavState(rx.State):
+class NavState(AuthState):
     def to_home(self):
         """
         on_click event

@@ -6,7 +6,7 @@ import logging
 from typing import List, Optional
 
 from lending_app.models import ChatSession, ChatSessionMessageModel
-from lending_app.auth.state import AuthState
+from lending_app.auth.auth_state import AuthState
 
 from . import ai
 
