@@ -22,6 +22,7 @@ class ChatState(AuthState):
     did_submit: bool = False
     messages: List[ChatMessage] = []
     hist_chat_sessions: List[ChatSession] = []
+    session_msg_counter: int = 0
 
     @rx.var
     def user_did_submit(self) -> bool:
@@ -34,7 +35,15 @@ class ChatState(AuthState):
             my_session_id = None
         return my_session_id
 
-
+    def get_chat_history(self):
+        if self.user_id is not None:
+            with rx.session() as db_session:
+                self.hist_chat_sessions = db_session.query(ChatSession).filter_by(user_id=self.user_id).all()
+                logging.info(f"Found {len(self.hist_chat_sessions)} chat sessions for user_id: {self.user_id}")
+        else:
+                logging.info(
+                    f"Chat Session Data Not Fetched, user not logged in"
+                )
 
     def create_new_chat_session(self):
         user_id = self.user_id
@@ -46,25 +55,25 @@ class ChatState(AuthState):
 
         with rx.session() as db_session:
             chat_session = ChatSession(**data)
-
             logging.info(f"Chat Session Data: {chat_session}")
+            
+            logging.info(f"message_count: {self.session_msg_counter}")
 
             # add to the session if user is logged in
-            if user_id is not None:
+            if user_id is not None and self.session_msg_counter > 0:
                 db_session.add(chat_session)  # prepare to save
                 db_session.commit()  # actually save
                 db_session.refresh(chat_session)
                 logging.info(f"Chat Session Data Logged: {chat_session}")
-
-                self.hist_chat_sessions = db_session.query(ChatSession).filter_by(user_id=user_id).all()
-                logging.info(f"Found {len(self.hist_chat_sessions)} chat sessions for user_id: {user_id}")
             else:
                 logging.info(
                     f"Chat Session Data Not Logged, user not logged in: {chat_session}"
                 )
 
             self.chat_session = chat_session
-            return chat_session
+            self.session_msg_counter = 0
+        self.get_chat_history()
+        return chat_session
 
     def clear_ui(self):
         self.chat_session = None
@@ -137,6 +146,7 @@ class ChatState(AuthState):
             obj = ChatSessionMessageModel(**data)
             db_session.add(obj)  # prepare to save
             db_session.commit()  # actually save
+        self.session_msg_counter += 1
 
     def append_message_to_ui(self, message, is_bot: bool = False):
         self.messages.append(ChatMessage(message=message, is_bot=is_bot))
