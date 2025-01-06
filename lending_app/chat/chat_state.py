@@ -10,6 +10,7 @@ from lending_app.auth.auth_state import AuthState
 
 from . import ai
 
+
 class ChatMessage(rx.Base):
     message: str
     is_bot: bool = False
@@ -20,32 +21,32 @@ class ChatState(AuthState):
     not_found: Optional[bool] = None
     did_submit: bool = False
     messages: List[ChatMessage] = []
+    hist_chat_sessions: List[ChatSession] = []
 
     @rx.var
     def user_did_submit(self) -> bool:
         return self.did_submit
-    
+
     def get_session_id(self) -> int:
         try:
-            my_session_id = int(self.router.page.params.get('session_id'))
+            my_session_id = int(self.router.page.params.get("session_id"))
         except:
             my_session_id = None
         return my_session_id
-    
+
+
+
     def create_new_chat_session(self):
         user_id = self.user_id
         logging.info(f"self.user_id: {user_id}, type: {type(user_id)}")
 
-        data = {
-            "user_id": user_id,
-            "messages": []
-        }
-        
+        data = {"user_id": user_id, "messages": []}
+
         logging.info(f"chatsession_data_input: {data}, type: {type(data)}")
 
         with rx.session() as db_session:
             chat_session = ChatSession(**data)
-            
+
             logging.info(f"Chat Session Data: {chat_session}")
 
             # add to the session if user is logged in
@@ -54,9 +55,14 @@ class ChatState(AuthState):
                 db_session.commit()  # actually save
                 db_session.refresh(chat_session)
                 logging.info(f"Chat Session Data Logged: {chat_session}")
+
+                self.hist_chat_sessions = db_session.query(ChatSession).filter_by(user_id=user_id).all()
+                logging.info(f"Found {len(self.hist_chat_sessions)} chat sessions for user_id: {user_id}")
             else:
-                logging.info(f"Chat Session Data Not Logged, user not logged in: {chat_session}")
-            
+                logging.info(
+                    f"Chat Session Data Not Logged, user not logged in: {chat_session}"
+                )
+
             self.chat_session = chat_session
             return chat_session
 
@@ -81,9 +87,7 @@ class ChatState(AuthState):
             session_id = self.get_session_id()
         # ChatSession.id == session_id
         with rx.session() as db_session:
-            sql_statement = sqlmodel.select(
-                ChatSession
-            ).where(
+            sql_statement = sqlmodel.select(ChatSession).where(
                 ChatSession.id == session_id
             )
             result = db_session.exec(sql_statement).one_or_none()
@@ -97,8 +101,7 @@ class ChatState(AuthState):
                 msg_txt = msg_obj.content
                 is_bot = False if msg_obj.role == "user" else True
                 self.append_message_to_ui(msg_txt, is_bot=is_bot)
-            
-    
+
     def on_detail_load(self):
         session_id = self.get_session_id()
         reload_detail = False
@@ -119,30 +122,25 @@ class ChatState(AuthState):
         self.clear_ui()
         self.create_new_chat_session()
 
-    def insert_message_to_db(self, content, role='unknown'):
+    def insert_message_to_db(self, content, role="unknown"):
         print("insert message data to db")
         if self.chat_session is None:
             return
         if not isinstance(self.chat_session, ChatSession):
-            return 
+            return
         with rx.session() as db_session:
             data = {
                 "session_id": self.chat_session.id,
                 "content": content,
-                "role": role
+                "role": role,
             }
             obj = ChatSessionMessageModel(**data)
-            db_session.add(obj) # prepare to save
-            db_session.commit() # actually save
+            db_session.add(obj)  # prepare to save
+            db_session.commit()  # actually save
 
-    def append_message_to_ui(self, message, is_bot:bool=False):
-        self.messages.append(
-            ChatMessage(
-                message=message,
-                is_bot = is_bot
-            )
-        )
-    
+    def append_message_to_ui(self, message, is_bot: bool = False):
+        self.messages.append(ChatMessage(message=message, is_bot=is_bot))
+
     # def get_gpt_messages(self):
     #     gpt_messages = [
     #         {
@@ -160,18 +158,18 @@ class ChatState(AuthState):
     #         })
     #     return gpt_messages
 
-    async def handle_submit(self, form_data:dict):
-        print('here is our form data', form_data)
-        user_message = form_data.get('message')
+    async def handle_submit(self, form_data: dict):
+        print("here is our form data", form_data)
+        user_message = form_data.get("message")
         if user_message:
             self.did_submit = True
             self.append_message_to_ui(user_message, is_bot=False)
-            self.insert_message_to_db(user_message, role='user')
+            self.insert_message_to_db(user_message, role="user")
             yield
             # gpt_messages = self.get_gpt_messages()
             # bot_response = ai.get_llm_response(gpt_messages)
             bot_response = "bot response"
             self.did_submit = False
             self.append_message_to_ui(bot_response, is_bot=True)
-            self.insert_message_to_db(bot_response, role='system')
+            self.insert_message_to_db(bot_response, role="system")
             yield
