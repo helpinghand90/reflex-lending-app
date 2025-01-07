@@ -14,12 +14,10 @@ from lending_app.auth.auth_state import AuthState
 
 
 class AppState(AuthState):
-    app_form_page: int = 0
     form_data: dict = {}
 
     @rx.event
-    def submit_application(self):
-        self.app_form_page = 0
-        rx.alert("Application submitted!")
+    def handle_submit(self, form_data: dict):
+        self.form_data = form_data
         
     ...

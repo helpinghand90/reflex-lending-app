@@ -21,7 +21,7 @@ app.add_page(
 
 
 app.add_page(
-    application.app_page, 
+    application.employment_details_page, 
     route=navigation.routes.APPLICATION_ROUTE,
     # on_load=application.app_state.AppState.on_load
 )
