@@ -68,7 +68,13 @@ def chat_window() -> rx.Component:
             gap="auto",
             id="chat-page-open-hstack",
         ),
-        rx.box(rx.foreach(ChatState.messages, message_box), width="100%"),
+        rx.box(
+            rx.foreach(ChatState.messages, message_box),
+            width="100%",
+            overflow="auto",
+            max_height="65vh",
+            id="chat-page-open-messages",
+        ),
         chat_form(),
         spacing="5",
         justify="center",
@@ -80,10 +86,10 @@ def chat_window() -> rx.Component:
 
 def hist_chat_session_card(chat_session: ChatSession) -> rx.Component:
     return rx.link(
-        rx.card(  
+        rx.card(
             f"User {chat_session.user_id}: Chat {chat_session.id} @ {chat_session.created_at}",
             height="7vh",
-            width="100%"
+            width="100%",
         ),
         on_click=lambda: rx.redirect(f"/chat/{chat_session.id}"),
     )
@@ -104,6 +110,8 @@ def chat_history():
                     width="100%",
                 ),
                 width="100%",
+                overflow="auto",
+                max_height="35vh",
             ),
             width="100%",
         ),
@@ -111,7 +119,6 @@ def chat_history():
         height="100%",
         min_height="7vh",
         id="chat-history",
-        border="1px solid",
     )
 
 
@@ -126,7 +133,6 @@ def chat_page():
                     chat_window(),
                     chat_history(),
                     width="100%",
-                    border="1px solid",
                 ),
                 rx.box(width="10%"),
                 width="100%",
