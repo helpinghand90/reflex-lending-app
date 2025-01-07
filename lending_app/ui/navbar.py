@@ -26,6 +26,7 @@ def base_navbar() -> rx.Component:
                     navbar_link("Home", navigation.routes.HOME_ROUTE),
                     navbar_link("About", navigation.routes.ABOUT_US_ROUTE),
                     navbar_link("Chat", navigation.routes.CHAT_ROUTE),
+                    navbar_link("Apply Now", navigation.routes.APPLICATION_ROUTE),
                     rx.cond(
                         AuthState.is_authenticated,
                         rx.button("Logout", on_click=AuthState.perform_logout),
@@ -62,6 +63,9 @@ def base_navbar() -> rx.Component:
                         ),
                         rx.menu.item(
                             "Chat", on_click=navigation.nav_state.NavState.to_chat
+                        ),
+                        rx.menu.item(
+                            "Apply Now", on_click=navigation.nav_state.NavState.to_app
                         ),
                     ),
                     justify="end",

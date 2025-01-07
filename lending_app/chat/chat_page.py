@@ -7,9 +7,6 @@ from .chat_state import ChatMessage, ChatState, ChatSession
 from .form import chat_form
 
 
-from reflex.components.radix.themes.base import (
-    LiteralAccentColor,
-)
 
 
 message_style = dict(
@@ -112,6 +109,7 @@ def chat_history():
                 width="100%",
                 overflow="auto",
                 max_height="35vh",
+                padding="8px",
             ),
             width="100%",
         ),
