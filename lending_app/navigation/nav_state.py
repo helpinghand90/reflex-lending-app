@@ -19,3 +19,7 @@ class NavState(AuthState):
 
     def to_chat(self):
         return rx.redirect(routes.CHAT_ROUTE)
+    
+    
+    def to_app(self):
+        return rx.redirect(routes.APPLICATION_ROUTE)

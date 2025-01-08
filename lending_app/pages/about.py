@@ -4,6 +4,7 @@ import reflex as rx
 
 from lending_app import ui
 
+
 def about_us_page() -> rx.Component:
     # About us Page
     return ui.base_layout(

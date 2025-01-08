@@ -2,7 +2,7 @@
 
 import reflex as rx
 
-from . import chat, pages, navigation
+from . import chat, pages, navigation, application
 
 app = rx.App()
 app.add_page(pages.home_page, route=navigation.routes.HOME_ROUTE)
@@ -19,3 +19,9 @@ app.add_page(
     on_load=chat.chat_state.ChatState.on_load
 )
 
+
+app.add_page(
+    application.employment_details_page, 
+    route=navigation.routes.APPLICATION_ROUTE,
+    # on_load=application.app_state.AppState.on_load
+)
