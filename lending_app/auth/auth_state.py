@@ -5,18 +5,12 @@ import os
 import logging
 from lending_app.models import UserDetailsModel
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s - %(levelname)s - %(message)s - %(name)s - %(funcName)s - %(lineno)d",
-)
 
 
 # TODO: Remove Kinde credentials from the file here
 # TODO: only log user details to the database when they first sign up
 
-# KINDE_HOST = os.environ.get("KINDE_HOST")
-# KINDE_CLIENT_ID = os.environ.get("KINDE_CLIENT_ID")
-# KINDE_CLIENT_SECRET = os.environ.get("KINDE_CLIENT_SECRET")
+
 KINDE_REDIRECT_URL = os.environ.get(
     "KINDE_REDIRECT_URL",
     "https://crispy-telegram-pj4wp47g7rqcrw6q-3000.app.github.dev/",

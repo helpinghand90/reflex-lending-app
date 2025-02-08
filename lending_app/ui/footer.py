@@ -15,6 +15,7 @@ def footer_items_customer_service() -> rx.Component:
         footer_item("Frequently Asked Questions", "/faqs"),
         footer_item("Contact", "/contact"),
         footer_item("About Us", "/about"),
+        footer_item("External API", "/external_api"),
         spacing="4",
         text_align=["center", "center", "start"],
         flex_direction="column",
